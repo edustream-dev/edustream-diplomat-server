@@ -235,6 +235,7 @@ func (o *OtherServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(servers) == 0 {
+		robinLocker.Unlock()
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprint(w, "No servers to handle your request!")
 		return
