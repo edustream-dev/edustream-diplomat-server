@@ -35,7 +35,7 @@ func manageServers() {
 		serverLock.Lock()
 		waitingServerLock.Lock()
 		for _, server := range append(servers, waitingServers...) {
-			response, err := client.Get(fmt.Sprintf("http://%s/", server))
+			response, err := client.Get(fmt.Sprintf("%s/", server))
 
 			if err != nil {
 				handle("Error trying to get health of server!", err)
