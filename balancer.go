@@ -139,8 +139,8 @@ func (b *IngestServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (s *OutgestServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	sid := strings.Split(r.URL.Path, "/")[0]
-	session := strings.Split(r.URL.Path, "/")[1]
+	sid := strings.Split(r.URL.Path, "/")[1]
+	session := strings.Split(r.URL.Path, "/")[2]
 
 	role, err := checkSession(sid, session)
 
@@ -218,10 +218,10 @@ func (s *OutgestServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
-
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprint(w, `{"status": false, "err": "No server available to process your request!"}`)
 	}
+
+	w.WriteHeader(http.StatusBadRequest)
+	fmt.Fprint(w, `{"status": false, "err": "No server available to process your request!"}`)
 }
 
 func (o *OtherServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
