@@ -96,6 +96,27 @@ func (b *IngestServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		URL   string
 	}, 0)
 
+	if len(streamServers) == 0 {
+		robinLocker.Lock()
+
+		robinManager++
+		if robinManager >= len(servers) {
+			robinManager = 0
+		}
+
+		if len(servers) == 0 {
+			robinLocker.Unlock()
+			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprint(w, "No servers to handle your request!")
+			return
+		}
+
+		http.Redirect(w, r, fmt.Sprintf("https://%s%s", servers[robinManager], r.RequestURI), http.StatusTemporaryRedirect)
+
+		robinLocker.Unlock()
+		return
+	}
+
 	for _, streamServer := range streamServers {
 		if streamServer.cameraID == cid {
 			logger.Print("Normal redirect for stream found!")
