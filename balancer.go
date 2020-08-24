@@ -89,7 +89,9 @@ type OtherServer struct{}
 func (b *IngestServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	cid := r.URL.EscapedPath()[:strings.LastIndex(r.URL.EscapedPath(), "/")]
+	logger.Print("We are in ingest server!")
+
+	cid := r.URL.EscapedPath()[strings.Index(r.URL.EscapedPath(), "/"):strings.LastIndex(r.URL.EscapedPath(), "/")]
 
 	refs := make([]struct {
 		count int
