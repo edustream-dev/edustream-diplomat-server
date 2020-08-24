@@ -114,6 +114,12 @@ func (b *IngestServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		streamServers = append(streamServers, &StreamServer{
+			URL:      servers[robinManager],
+			cameraID: cid,
+		})
+
+		logger.Printf("Redirecting without any streamservers to %s", fmt.Sprintf("https://%s%s", servers[robinManager], r.RequestURI))
 		http.Redirect(w, r, fmt.Sprintf("https://%s%s", servers[robinManager], r.RequestURI), http.StatusTemporaryRedirect)
 
 		robinLocker.Unlock()
