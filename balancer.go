@@ -120,7 +120,7 @@ func (b *IngestServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		})
 
 		logger.Printf("Redirecting without any streamservers to %s", fmt.Sprintf("https://%s%s", servers[robinManager], r.RequestURI))
-		http.Redirect(w, r, fmt.Sprintf("https://%s%s", servers[robinManager], r.RequestURI), http.StatusTemporaryRedirect)
+		http.Redirect(w, r, fmt.Sprintf("https://%s%s", servers[robinManager], r.RequestURI), http.StatusPermanentRedirect)
 
 		robinLocker.Unlock()
 		return
@@ -129,7 +129,7 @@ func (b *IngestServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	for _, streamServer := range streamServers {
 		if streamServer.cameraID == cid {
 			logger.Print("Normal redirect for stream found!")
-			http.Redirect(w, r, fmt.Sprintf("https://%s%s", streamServer.URL, r.RequestURI), http.StatusTemporaryRedirect)
+			http.Redirect(w, r, fmt.Sprintf("https://%s%s", streamServer.URL, r.RequestURI), http.StatusPermanentRedirect)
 			return
 		}
 
@@ -165,7 +165,7 @@ func (b *IngestServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	streamServers = append(streamServers, &StreamServer{refs[lowestIndex].URL, cid})
 
 	logger.Printf("Found new server for logging!")
-	http.Redirect(w, r, fmt.Sprintf("https://%s%s", refs[lowestIndex].URL, r.RequestURI), http.StatusTemporaryRedirect)
+	http.Redirect(w, r, fmt.Sprintf("https://%s%s", refs[lowestIndex].URL, r.RequestURI), http.StatusPermanentRedirect)
 }
 
 func (s *OutgestServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
