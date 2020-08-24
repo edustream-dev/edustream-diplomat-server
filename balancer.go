@@ -89,7 +89,8 @@ type OtherServer struct{}
 func (b *IngestServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	cid := r.URL.EscapedPath()[:strings.LastIndex(r.URL.EscapedPath(), "/")][strings.LastIndex(r.URL.EscapedPath(), "/")+1:]
+	cid := r.URL.EscapedPath()[:strings.LastIndex(r.URL.EscapedPath(), "/")]
+	cid = cid[strings.LastIndex(cid, "/")+1:]
 
 	logger.Printf("We are in ingest server with cid %s!", cid)
 
