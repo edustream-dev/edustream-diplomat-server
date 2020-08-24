@@ -72,6 +72,11 @@ func announce(w http.ResponseWriter, r *http.Request) {
 	}
 
 	serverLock.Lock()
+	defer serverLock.Unlock()
+	for _, waitingServer := range waitingServers {
+		if waitingServer == query["url"][0] {
+			return
+		}
+	}
 	waitingServers = append(waitingServers, query["url"][0])
-	serverLock.Unlock()
 }

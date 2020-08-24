@@ -98,6 +98,7 @@ func (b *IngestServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	for _, streamServer := range streamServers {
 		if streamServer.cameraID == cid {
+			logger.Print("Normal redirect for stream found!")
 			http.Redirect(w, r, fmt.Sprintf("https://%s%s", streamServer.URL, r.RequestURI), http.StatusTemporaryRedirect)
 			return
 		}
@@ -133,6 +134,7 @@ func (b *IngestServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	streamServers = append(streamServers, &StreamServer{refs[lowestIndex].URL, cid})
 
+	logger.Printf("Found new server for logging!")
 	http.Redirect(w, r, fmt.Sprintf("https://%s%s", refs[lowestIndex].URL, r.RequestURI), http.StatusTemporaryRedirect)
 }
 
